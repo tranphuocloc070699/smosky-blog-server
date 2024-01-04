@@ -9,7 +9,7 @@ spring:
   main:
     web-application-type: servlet
   datasource:
-    url: jdbc:postgresql://localhost:5432/smoky
+    url: jdbc:postgresql://localhost:5432/smosky
     username: loctran
     password: Loc123456
 
