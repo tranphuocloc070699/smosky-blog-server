@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -40,10 +41,10 @@ public class PostsDto {
 //  @Type(JsonBinaryType.class)
 //  private Toc[] toc;
 @JsonProperty("created_at")
-  private Date createdAt;
+  private LocalDateTime createdAt;
 
   @JsonProperty("updated_at")
-  private Date updatedAt;
+  private LocalDateTime updatedAt;
 
 //  @ManyToOne()
 //  @JoinColumn(name = "user_id",nullable = false)

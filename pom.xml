@@ -12,6 +12,7 @@
 	<artifactId>blog-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>blog-server</name>
+	<packaging>jar</packaging>
 	<description>Blog Service from Skosky Microservices project</description>
 	<properties>
 		<java.version>17</java.version>
@@ -68,6 +69,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<image>
+						<name>loctran070699/${project.artifactId}:s4</name>
+					</image>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

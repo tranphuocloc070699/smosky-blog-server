@@ -1,6 +1,6 @@
 package com.smosky.blogserver.repositories;
 
-import com.smosky.blogserver.model.Posts;
+import com.smosky.blogserver.models.Posts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +15,9 @@ public class PostsDataAccess {
 
   public Optional<Posts> findBySlug(String slug){
     return repository.findBySlug(slug);
+  }
+  public Optional<Posts> findByTitle(String title){
+    return repository.findByTitle(title);
   }
 
   public Optional<Posts> findById(String id) {

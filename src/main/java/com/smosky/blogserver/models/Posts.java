@@ -1,16 +1,20 @@
-package com.smosky.blogserver.model;
+package com.smosky.blogserver.models;
 
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(
     name = "posts"
@@ -18,15 +22,7 @@ import java.util.Date;
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Posts {
   @Id
-  @SequenceGenerator(
-      name = "posts_id_seq",
-      sequenceName = "posts_id_seq",
-      allocationSize = 1
-  )
-  @GeneratedValue(
-      strategy = GenerationType.UUID,
-      generator = "posts_id_seq"
-  )
+  @UuidGenerator
   private String id;
 
   @Column(nullable = false)
@@ -44,18 +40,27 @@ public class Posts {
   @Column(name="pre_content")
   private String preContent;
 
+  @Column(name="created_at")
+  private LocalDateTime createdAt;
+
+  @Column(name="updated_at")
+  private LocalDateTime updatedAt;
+
+  @PrePersist
+  protected void onCreate() {
+    createdAt = LocalDateTime.now();
+  }
+
+  @PreUpdate
+  protected void onUpdate(){
+    updatedAt = LocalDateTime.now();
+  }
 //  @Column()
 //  private List<Long> upvote=   new ArrayList<>();
 //
 //  @Column(columnDefinition = "jsonb")
 //  @Type(JsonBinaryType.class)
 //  private Toc[] toc;
-
-  @Column(name="created_at")
-  private Date createdAt;
-
-  @Column(name="updated_at")
-  private Date updatedAt;
 
 //  @ManyToOne()
 //  @JoinColumn(name = "user_id",nullable = false)
@@ -65,15 +70,6 @@ public class Posts {
 //  @JsonIgnoreProperties("story")
 //  private List<Comment> comments;
 
-  @PrePersist
-  protected void onCreate() {
-    createdAt = new Date();
-    updatedAt = new Date();
-  }
 
-  @PreUpdate
-  protected void onUpdate(){
-    updatedAt = new Date();
-  }
 
 }
