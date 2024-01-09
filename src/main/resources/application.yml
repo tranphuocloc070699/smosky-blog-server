@@ -6,6 +6,10 @@ server:
       enabled: false
     path: /error
 spring:
+  application:
+    name: "blog-server"
+  profiles:
+    active: "prod"
   main:
     web-application-type: servlet
   datasource:
@@ -21,6 +25,13 @@ spring:
       hibernate: org.hibernate.dialect.PostgreSQLDialect
       format-sql: true
     show-sql: true
-
+  config:
+    import: "optional:configserver:http://localhost:8071"
     logging.level:
       org.springframework.security: TRACE
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

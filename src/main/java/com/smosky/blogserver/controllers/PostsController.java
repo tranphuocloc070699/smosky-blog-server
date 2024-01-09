@@ -1,6 +1,7 @@
 package com.smosky.blogserver.controllers;
 
 import com.smosky.blogserver.constant.PostsConstant;
+import com.smosky.blogserver.dtos.AppInfoConfigDto;
 import com.smosky.blogserver.dtos.PostsDto;
 import com.smosky.blogserver.dtos.ResponseDto;
 import com.smosky.blogserver.models.Posts;
@@ -37,7 +38,7 @@ public class PostsController {
 
   private final PostsServiceImpl postsService;
   private final HttpServletRequest httpServletRequest;
-
+  private final AppInfoConfigDto appInfoConfigDto;
   @Operation(
       summary = "Fetch pagination Posts REST API",
       description = "REST API to fetch  Posts details"
@@ -228,6 +229,42 @@ public class PostsController {
         .status(HttpStatus.OK)
         .path(httpServletRequest.getContextPath())
         .data(model)
+        .errors(null)
+        .message(PostsConstant.MESSAGE_200)
+        .build();
+    return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+  }
+
+
+  /*
+  * Show app info
+  * */
+  @Operation(
+      summary = "Get Contact Info",
+      description = "Contact Info details that can be reached out in case of any issues"
+  )
+  @ApiResponses({
+      @ApiResponse(
+          responseCode = "200",
+          description = "HTTP Status OK"
+      ),
+      @ApiResponse(
+          responseCode = "500",
+          description = "HTTP Status Internal Server Error",
+          content = @Content(
+              schema = @Schema(implementation = ResponseDto.class)
+          )
+      )
+  }
+  )
+  @GetMapping("/contact-info")
+  public ResponseEntity<Object> getContactInfo() {
+    System.out.println(appInfoConfigDto.getMessage());
+    ResponseDto responseDto = ResponseDto.builder()
+        .timestamp(new Date())
+        .status(HttpStatus.OK)
+        .path(httpServletRequest.getContextPath())
+        .data(appInfoConfigDto)
         .errors(null)
         .message(PostsConstant.MESSAGE_200)
         .build();
