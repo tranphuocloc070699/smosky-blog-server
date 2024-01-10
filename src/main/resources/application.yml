@@ -29,6 +29,12 @@ spring:
     import: "optional:configserver:http://localhost:8071"
     logging.level:
       org.springframework.security: TRACE
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
 
 management:
   endpoints:
