@@ -259,7 +259,6 @@ public class PostsController {
   )
   @GetMapping("/contact-info")
   public ResponseEntity<Object> getContactInfo() {
-    System.out.println(appInfoConfigDto.getMessage());
     ResponseDto responseDto = ResponseDto.builder()
         .timestamp(new Date())
         .status(HttpStatus.OK)
