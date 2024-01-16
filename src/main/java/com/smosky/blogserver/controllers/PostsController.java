@@ -5,6 +5,7 @@ import com.smosky.blogserver.dtos.AppInfoConfigDto;
 import com.smosky.blogserver.dtos.PostsDto;
 import com.smosky.blogserver.dtos.ResponseDto;
 import com.smosky.blogserver.models.Posts;
+import com.smosky.blogserver.services.clients.BoilerplateFeignClient;
 import com.smosky.blogserver.services.impl.PostsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -39,6 +40,7 @@ public class PostsController {
   private final PostsServiceImpl postsService;
   private final HttpServletRequest httpServletRequest;
   private final AppInfoConfigDto appInfoConfigDto;
+  private final BoilerplateFeignClient boilerplateFeignClient;
   @Operation(
       summary = "Fetch pagination Posts REST API",
       description = "REST API to fetch  Posts details"
@@ -259,6 +261,7 @@ public class PostsController {
   )
   @GetMapping("/contact-info")
   public ResponseEntity<Object> getContactInfo() {
+    System.out.println("This is for test blog");
     ResponseDto responseDto = ResponseDto.builder()
         .timestamp(new Date())
         .status(HttpStatus.OK)
@@ -269,4 +272,40 @@ public class PostsController {
         .build();
     return ResponseEntity.status(HttpStatus.OK).body(responseDto);
   }
+
+
+  /*
+   * Show app info
+   * */
+  @Operation(
+      summary = "Test Microservices FeignClient",
+      description = "Get boilerplate data from boilerplate-server service"
+  )
+  @ApiResponses({
+      @ApiResponse(
+          responseCode = "200",
+          description = "HTTP Status OK"
+      ),
+      @ApiResponse(
+          responseCode = "500",
+          description = "HTTP Status Internal Server Error",
+          content = @Content(
+              schema = @Schema(implementation = ResponseDto.class)
+          )
+      )
+  }
+  )
+  @GetMapping("/boilerplate")
+  public ResponseEntity<Object> getBoilerplate() {
+    ResponseDto responseDto = ResponseDto.builder()
+        .timestamp(new Date())
+        .status(HttpStatus.OK)
+        .path(httpServletRequest.getContextPath())
+        .data(boilerplateFeignClient.getCiCd())
+        .errors(null)
+        .message(PostsConstant.MESSAGE_200)
+        .build();
+    return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+  }
+
 }
