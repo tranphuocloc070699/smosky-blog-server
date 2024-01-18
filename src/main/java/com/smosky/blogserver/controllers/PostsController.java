@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +43,8 @@ public class PostsController {
   private final HttpServletRequest httpServletRequest;
   private final AppInfoConfigDto appInfoConfigDto;
   private final BoilerplateFeignClient boilerplateFeignClient;
+  public static final String CORRELATION_ID = "X-CORRELATION-ID";
+  private static final Logger logger = LoggerFactory.getLogger(PostsController.class);
   @Operation(
       summary = "Fetch pagination Posts REST API",
       description = "REST API to fetch  Posts details"
@@ -296,12 +300,16 @@ public class PostsController {
   }
   )
   @GetMapping("/boilerplate")
-  public ResponseEntity<Object> getBoilerplate() {
+  public ResponseEntity<Object> getBoilerplate(@RequestHeader(CORRELATION_ID)
+                                                 String correlationId) {
+
+    System.out.println(String.format(CORRELATION_ID + " found: {} ", correlationId));
+
     ResponseDto responseDto = ResponseDto.builder()
         .timestamp(new Date())
         .status(HttpStatus.OK)
         .path(httpServletRequest.getContextPath())
-        .data(boilerplateFeignClient.getCiCd())
+        .data(boilerplateFeignClient.getCiCd(correlationId))
         .errors(null)
         .message(PostsConstant.MESSAGE_200)
         .build();
